@@ -21,22 +21,32 @@ export default function Home() {
 
   // ================== AUTH STATE ==================
   useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setUser(data.session?.user ?? null);
-    };
-    getSession();
+  const initAuth = async () => {
+    const { data, error } = await supabase.auth.getSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
+    if (error) {
+      console.log("Session error:", error);
+      return;
+    }
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+    if (data.session) {
+      setUser(data.session.user);
+    }
+  };
+
+  initAuth();
+
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      setUser(session?.user ?? null);
+    }
+  );
+
+  return () => {
+    listener.subscription.unsubscribe();
+  };
+}, []);
+
 
   // ================== LOAD DATA ==================
   useEffect(() => {
