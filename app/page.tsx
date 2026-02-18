@@ -21,21 +21,6 @@ export default function Home() {
 
   // ================== AUTH STATE ==================
 
-useEffect(() => {
-  const handleOAuthRedirect = async () => {
-    const hash = window.location.hash;
-
-    if (hash && hash.includes("access_token")) {
-      const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
-
-      if (!error) {
-        window.location.hash = "";
-      }
-    }
-  };
-
-  handleOAuthRedirect();
-}, []);
 
 
 
