@@ -5,10 +5,10 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   {
     auth: {
+      flowType: "pkce", // 🔥 CHANGE TO PKCE
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: "implicit",
     },
   }
 );
