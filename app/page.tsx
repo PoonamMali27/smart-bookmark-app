@@ -23,6 +23,25 @@ export default function Home() {
 
 
 
+useEffect(() => {
+  const exchangeCode = async () => {
+    const { error } = await supabase.auth.exchangeCodeForSession(
+      window.location.href
+    );
+
+    if (!error) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      console.log("Exchange error:", error);
+    }
+  };
+
+  if (window.location.search.includes("code=")) {
+    exchangeCode();
+  }
+}, []);
+
+
 
 
 
